@@ -7,8 +7,14 @@ let windSpeed = document.querySelector("#wind");
 let clouds = document.querySelector("#cloud");
 let time1 = document.querySelector("#sunrise");
 let time2 = document.querySelector("#sunset");
+let feelsLike = document.querySelector("#feelsLike");
+let min = document.querySelector("#min");
+let max = document.querySelector("#max");
+let gust = document.querySelector("#gust");
 let cityName;
 let APIdata;
+
+
 form.addEventListener("submit", function(dets){
     dets.preventDefault();
     cityName = document.querySelector("#cityName").value.trim();
@@ -36,7 +42,10 @@ function showData(data){
     pressure.textContent = `🔼 Pressure: ${data.main.pressure} hPa`
     visibility.textContent = `🌫️ Visibility: ${data.visibility}m`
     windSpeed.textContent = `🌬️ Wind: ${Math.floor(data.wind.speed)} km/h`;
-
+    feelsLike.textContent = `${Math.floor(data.main.feels_like)}°C`;
+    min.textContent = `${Math.floor(data.main.temp_min)}°C`;
+    max.textContent = `${Math.floor(data.main.temp_max)}°C`;
+    gust.textContent = `${Math.floor(data.wind.gust)}`;
     let cloudMessage = "";
     let cloudiness = data.clouds.all
     if (cloudiness < 20) {
