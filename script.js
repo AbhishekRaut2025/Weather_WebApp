@@ -11,8 +11,18 @@ let feelsLike = document.querySelector("#feelsLike");
 let min = document.querySelector("#min");
 let max = document.querySelector("#max");
 let gust = document.querySelector("#gust");
+let datetime = document.querySelector(".datetime");
+let defData;
 let cityName;
 let APIdata;
+
+async function defaultt(){
+    let defRawData = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=mumbai&appid=c6c6ddb15be0efeaf596ff3d2b806426&units=metric`);
+    defData = await defRawData.json();
+    showData(defData);
+}
+defaultt();
+
 
 
 form.addEventListener("submit", function(dets){
@@ -45,7 +55,7 @@ function showData(data){
     feelsLike.textContent = `${Math.floor(data.main.feels_like)}°C`;
     min.textContent = `${Math.floor(data.main.temp_min)}°C`;
     max.textContent = `${Math.floor(data.main.temp_max)}°C`;
-    gust.textContent = `${Math.floor(data.wind.gust)}`;
+    gust.textContent = `${Math.floor(data.wind.gust)} km/h`;
     let cloudMessage = "";
     let cloudiness = data.clouds.all
     if (cloudiness < 20) {
@@ -71,6 +81,22 @@ function showData(data){
     });
     time1.textContent = `🌅 Sunrise: ${sunriseTime}`;
     time2.textContent = `🌇 Sunset: ${sunsetTime}`
+
+    // updae time
+    const APItime = data.dt;
+    console.log(APItime+600);
+    const time = new Date(APItime * 1000);
+    const formats = {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12 : true
+    }
+    const finalTime = time.toLocaleString('en-US', formats);
+    datetime.textContent = finalTime.replace(',',' -');
+    datetime.textContent = finalTime.replace('at',' ,');
 }
 
 
